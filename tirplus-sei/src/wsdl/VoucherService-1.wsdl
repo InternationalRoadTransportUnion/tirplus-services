@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="VoucherService"
+	targetNamespace="http://www.tirplus.net/services/VoucherService-1"
+	xmlns:tns="http://www.tirplus.net/services/VoucherService-1" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" 
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:wsa10="http://www.w3.org/2005/08/addressing"
+	xmlns:v="http://www.tirplus.net/model/voucher-1"
+	xmlns:c="http://www.iru.org/model/tir-carnet-1"
+	xmlns:a="http://www.iru.org/model/tir-actor-1">
+	<wsp:Policy wsu:Id="VoucherServiceUsingAddressingPolicy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<wsaw:UsingAddressing />
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xs:schema targetNamespace="http://www.tirplus.net/services/VoucherService-1" elementFormDefault="qualified">
+			<xs:import schemaLocation="tirplus-voucher-1.xsd" namespace="http://www.tirplus.net/model/voucher-1" />
+			<xs:import schemaLocation="tir-carnet-1.xsd" namespace="http://www.iru.org/model/tir-carnet-1" />
+			<xs:import schemaLocation="tir-actor-1.xsd" namespace="http://www.iru.org/model/tir-actor-1" />
+
+			<xs:complexType name="TechnicalFaultInfoType">
+				<xs:sequence>
+					<xs:element name="id" type="xs:string"/>
+					<xs:element name="message" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:element name="TechnicalFaultInfo" type="tns:TechnicalFaultInfoType" />
+
+			<xs:element name="queryVoucher">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="voucher" type="v:VoucherNumberType"/>
+						<xs:element name="carnet" type="c:TIRCarnetNumberType"/>
+						<xs:element name="holder" type="a:HaulierIdType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="queryVoucherResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="status" type="v:RegistrationStatusType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="registerVoucher">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="voucher" type="v:VoucherNumberType"/>
+						<xs:element name="carnet" type="c:TIRCarnetNumberType"/>
+						<xs:element name="holder" type="a:HaulierIdType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:complexType name="RegisterVoucherResponseType">
+				<xs:sequence>
+					<xs:element name="success" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Whether the operation was completed successfully.
+							If success is true, status will be REGISTERED. 
+							If it is false, the status may be:
+							* REGISTERED: the registration failed because it was a duplicate call ; the client can continue nonetheless.
+							* NOT_REGISTERABLE: the registration is not possible for this tuple.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="status" type="v:RegistrationStatusType"/>
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:element name="registerVoucherResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="response" type="tns:RegisterVoucherResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+		</xs:schema>
+	</wsdl:types>
+	
+        <wsdl:message name="TechnicalException">
+                <wsdl:part name="fault" element="tns:TechnicalFaultInfo" />
+        </wsdl:message>
+
+	<wsdl:message name="queryVoucher">
+		<wsdl:part name="parameters" element="tns:queryVoucher" />
+	</wsdl:message>
+	<wsdl:message name="queryVoucherResponse">
+		<wsdl:part name="parameters" element="tns:queryVoucherResponse" />
+	</wsdl:message>
+
+	<wsdl:message name="registerVoucher">
+		<wsdl:part name="parameters" element="tns:registerVoucher" />
+	</wsdl:message>
+	<wsdl:message name="registerVoucherResponse">
+		<wsdl:part name="parameters" element="tns:registerVoucherResponse" />
+	</wsdl:message>
+
+	<wsdl:portType name="VoucherServiceSEI">
+		<wsdl:operation name="queryVoucher">
+			<wsdl:input
+				wsaw:Action="http://www.tirplus.net/services/VoucherService-1/queryVoucher"
+				message="tns:queryVoucher" />
+			<wsdl:output
+				wsaw:Action="http://www.tirplus.net/services/VoucherService-1/queryVoucherResponse"
+				message="tns:queryVoucherResponse" />
+			<wsdl:fault message="tns:TechnicalException" name="TechnicalException"/>
+		</wsdl:operation>
+		<wsdl:operation name="registerVoucher">
+			<wsdl:input
+				wsaw:Action="http://www.tirplus.net/services/VoucherService-1/registerVoucher"
+				message="tns:registerVoucher" />
+			<wsdl:output
+				wsaw:Action="http://www.tirplus.net/services/VoucherService-1/registerVoucherResponse"
+				message="tns:registerVoucherResponse" />
+			<wsdl:fault message="tns:TechnicalException" name="TechnicalException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="VoucherServiceBinding" type="tns:VoucherServiceSEI">
+		<wsp:PolicyReference URI="#VoucherServiceUsingAddressingPolicy" />
+		<soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="queryVoucher">
+			<soap12:operation
+				soapAction="http://www.tirplus.net/services/VoucherService-1/queryVoucher"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="TechnicalException">
+                                <soap12:fault name="TechnicalException" use="literal" />
+                        </wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="registerVoucher">
+			<soap12:operation
+				soapAction="http://www.tirplus.net/services/VoucherService-1/registerVoucher"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="TechnicalException">
+                                <soap12:fault name="TechnicalException" use="literal" />
+                        </wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="VoucherService">
+		<wsdl:port name="VoucherServicePort" binding="tns:VoucherServiceBinding">
+			<soap12:address
+				location="http://ws-test.tirplus.net/services/VoucherService-1" />
+			<wsa10:EndpointReference>
+				<wsa10:Address>http://ws-test.tirplus.net/services/VoucherService-1</wsa10:Address>
+				<Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+					<Dns>ws-test.tirplus.net</Dns>
+				</Identity>
+			</wsa10:EndpointReference>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
