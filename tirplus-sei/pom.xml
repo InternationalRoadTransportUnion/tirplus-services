@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.iru.tirplus</groupId>
 		<artifactId>tirplus-services</artifactId>
-		<version>0.2-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>tirplus-sei</artifactId>
