@@ -1,0 +1,17 @@
+{ "technicalInterfaceArtifacts": [ { "artifact": { "groupId": "${project.groupId}",
+                                                   "artifactId": "${project.artifactId}",
+                                                   "version": "${project.version}",
+                                                   "type": "${project.packaging}" 
+                                                 },
+                                     "technicalInterfaces": [ { "name": "soap::http://www.tirplus.net/services/VoucherService-1",
+                                                                "version": "${project.version}",
+                                                                "functionalInterfaces": [ { "name": "TIRPlusVoucherService",
+                                                                                            "version": "1.0"
+                                                                                           }
+                                                                                        ]
+                                                              }
+                                                            ]
+                                   }
+                                 ]
+}
+
