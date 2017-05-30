@@ -8,6 +8,26 @@
 	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<name>tirplus-services</name>
+	<description>TIR+ model and service definition</description>
+	<url>https://github.com/InternationalRoadTransportUnion/tirplus-services</url>
+	<licenses>
+		<license>
+			<name>The Open Software License 3.0 (OSL-3.0)</name>
+			<url>https://opensource.org/licenses/OSL-3.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:https://github.com/InternationalRoadTransportUnion/tirplus-services.git</connection>
+		<url>https://github.com/InternationalRoadTransportUnion/tirplus-services</url>
+	</scm>
+	<developers>
+		<developer>
+			<email>Matthieu.Verbert@iru.org</email>
+		</developer>
+	</developers>
+
 	<modules>
 		<module>tirplus-model</module>
 		<module>tirplus-sei</module>
