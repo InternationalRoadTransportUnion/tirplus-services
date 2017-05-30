@@ -5,7 +5,7 @@
 
 	<groupId>org.iru.tirplus</groupId>
 	<artifactId>tirplus-services</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<packaging>pom</packaging>
 
 	<name>tirplus-services</name>
