@@ -16,28 +16,26 @@
 		<plugins>
 			<plugin>
 				<groupId>org.iru.maven.plugins</groupId>
-				<artifactId>maven-jaxbgenser-plugin</artifactId>
-				<configuration>
-					<globalBindings>globalBindings.xjb</globalBindings>
-				</configuration>
+				<artifactId>jaxbgenser-maven-plugin</artifactId>
 			</plugin>
-
 
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.8.0</version>
+				<version>0.13.1</version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<extension>true</extension>
 							<bindingDirectory>${basedir}/target/xjb</bindingDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -54,7 +52,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.7</version>
 				<executions>
 					<execution>
 						<id>attach-schemas</id>
